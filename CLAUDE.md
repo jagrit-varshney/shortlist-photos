@@ -15,6 +15,8 @@ npm run dev      # start dev server (localhost:3000)
 npm run build    # production build
 npm run start    # start production server
 npm run lint     # eslint
+npm run test     # vitest (30 automated tests)
+npm run seed     # create first admin account interactively
 ```
 
 ## Architecture

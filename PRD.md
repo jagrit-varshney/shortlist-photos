@@ -159,28 +159,28 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M6 — Docker + Deployment
+## M6 — Docker + Deployment ✅
 
 ### Tasks
 
-- `[ ]` `Dockerfile` for Next.js app
-- `[ ]` `docker-compose.yml` — app + volume mount for photos folder + SQLite DB
+- `[x]` `Dockerfile` for Next.js app (standalone output, multi-stage build)
+- `[x]` `docker-compose.yml` — app + volume mount for photos folder + SQLite DB
 - `[x]` `.env.example` with all required env vars:
   - `PHOTOS_ROOT` — absolute path to photos folder
   - `AUTH_SECRET` — NextAuth secret
   - `DATABASE_PATH` — path to SQLite file
-- `[ ]` README — setup instructions for 3 deployment options:
-  - `[ ]` Local (MacBook) + Cloudflare Tunnel
-  - `[ ]` Local (MacBook) + Tailscale
-  - `[ ]` Cloud storage (generic S3-compatible)
-- `[ ]` Update CLAUDE.md with dev commands
+- `[x]` README — setup instructions for 3 deployment options:
+  - `[x]` Local (MacBook) + Cloudflare Tunnel
+  - `[x]` Local (MacBook) + Tailscale
+  - `[x]` Cloud VPS (DigitalOcean / Hetzner / AWS)
+- `[x]` Update CLAUDE.md with dev commands
 
 ### Test Cases
 
-- `[ ]` `docker compose up` starts app with no manual steps
-- `[ ]` App reads photos from mounted volume correctly
-- `[ ]` SQLite DB persists across container restarts (volume mount)
-- `[ ]` Missing `PHOTOS_ROOT` env var shows clear error on startup, not silent crash
+- `[ ]` `docker compose up` starts app with no manual steps *(manual — requires Docker)*
+- `[ ]` App reads photos from mounted volume correctly *(manual — requires Docker)*
+- `[ ]` SQLite DB persists across container restarts (volume mount) *(manual — requires Docker)*
+- `[ ]` Missing `PHOTOS_ROOT` env var shows clear error on startup, not silent crash *(manual — requires Docker)*
 
 ---
 

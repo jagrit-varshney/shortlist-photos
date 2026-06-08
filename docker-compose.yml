@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data                   # SQLite DB + thumbnail cache (persisted)
+      - ${PHOTOS_ROOT}:/photos:ro      # photo files (read-only)
+    environment:
+      PHOTOS_ROOT: /photos
+      DATABASE_PATH: /data/shortlist.db
+      THUMBNAILS_PATH: /data/thumbnails
+      AUTH_SECRET: ${AUTH_SECRET}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+    restart: unless-stopped
