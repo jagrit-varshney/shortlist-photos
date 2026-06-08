@@ -29,25 +29,25 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M1 — Project Setup + Photo Browsing
+## M1 — Project Setup + Photo Browsing ✅
 
 ### Tasks
 
-- `[ ]` Initialise Next.js project (App Router, TypeScript)
-- `[ ]` Add SQLite via `better-sqlite3`
-- `[ ]` Create DB schema (photos, folders, users, progress, shortlist tables)
-- `[ ]` Filesystem scanner — reads root folder path from env, indexes subfolders + photos into DB on startup
-- `[ ]` API route: `GET /api/folders` — list all folders with photo count
-- `[ ]` API route: `GET /api/folders/[folderId]/photos` — paginated photo list
-- `[ ]` API route: `GET /api/photos/[photoId]/thumbnail` — serve thumbnail (resize on-the-fly via `sharp`)
-- `[ ]` API route: `GET /api/photos/[photoId]/full` — serve full-res photo
-- `[ ]` Folder list page — shows all folders, photo count per folder
-- `[ ]` Slideshow component — full-screen, one photo at a time
-  - `[ ]` Progressive load: thumbnail first → swap to full-res when ready
-  - `[ ]` Preload next 10 thumbnails + next 2 full-res
-  - `[ ]` Big "Shortlist" + "Skip" buttons
-  - `[ ]` Counter: X of Y reviewed in this folder
-- `[ ]` Slideshow entry points: start from folder OR start from root (all photos)
+- `[x]` Initialise Next.js project (App Router, TypeScript)
+- `[x]` Add SQLite via `better-sqlite3`
+- `[x]` Create DB schema (photos, folders, users, progress, shortlist tables)
+- `[x]` Filesystem scanner — reads root folder path from env, indexes subfolders + photos into DB on startup
+- `[x]` API route: `GET /api/folders` — list all folders with photo count
+- `[x]` API route: `GET /api/folders/[folderId]/photos` — paginated photo list
+- `[x]` API route: `GET /api/photos/[photoId]/thumbnail` — serve thumbnail (resize on-the-fly via `sharp`)
+- `[x]` API route: `GET /api/photos/[photoId]/full` — serve full-res photo
+- `[x]` Folder list page — shows all folders, photo count per folder
+- `[x]` Slideshow component — full-screen, one photo at a time
+  - `[x]` Progressive load: thumbnail first → swap to full-res when ready
+  - `[x]` Preload next 10 thumbnails + next 2 full-res
+  - `[x]` Big "Shortlist" + "Skip" buttons
+  - `[x]` Counter: X of Y reviewed in this folder
+- `[x]` Slideshow entry points: start from folder OR start from root (all photos)
 
 ### Test Cases
 
@@ -165,7 +165,7 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 - `[ ]` `Dockerfile` for Next.js app
 - `[ ]` `docker-compose.yml` — app + volume mount for photos folder + SQLite DB
-- `[ ]` `.env.example` with all required env vars:
+- `[x]` `.env.example` with all required env vars:
   - `PHOTOS_ROOT` — absolute path to photos folder
   - `AUTH_SECRET` — NextAuth secret
   - `DATABASE_PATH` — path to SQLite file
