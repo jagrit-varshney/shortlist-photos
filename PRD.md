@@ -61,17 +61,17 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M2 — Auth + User Management
+## M2 — Auth + User Management ✅
 
 ### Tasks
 
-- `[ ]` Add Auth.js (NextAuth v5) with credentials provider
-- `[ ]` DB table: `users` (id, email, name, password_hash, role: admin|user, created_at)
-- `[ ]` Seed script: create first admin account
-- `[ ]` Login page (email + password)
-- `[ ]` Protected routes — redirect to login if unauthenticated
-- `[ ]` Session middleware — attach user to all API requests
-- `[ ]` Logout
+- `[x]` Add Auth.js (NextAuth v4) with credentials provider
+- `[x]` DB table: `users` (id, email, name, password_hash, role: admin|user, created_at)
+- `[x]` Seed script: create first admin account (`npm run seed`)
+- `[x]` Login page (email + password)
+- `[x]` Protected routes — redirect to login if unauthenticated (proxy.ts)
+- `[x]` Session middleware — attach user to all API requests
+- `[x]` Logout
 
 ### Test Cases
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Header from "@/components/Header";
 
 interface Folder {
   id: number;
@@ -22,10 +23,11 @@ export default async function HomePage() {
   const totalPhotos = folders.reduce((s, f) => s + f.photo_count, 0);
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white p-6">
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+      <Header />
+      <main className="flex-1 p-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">shortlist-photos</h1>
-        <p className="text-gray-400 mb-8">Select a folder to start reviewing photos.</p>
+        <p className="text-gray-400 mb-8 mt-4">Select a folder to start reviewing photos.</p>
 
         {folders.length === 0 && (
           <div className="text-gray-500 text-center py-16">
@@ -58,6 +60,7 @@ export default async function HomePage() {
           </Link>
         )}
       </div>
-    </main>
+      </main>
+    </div>
   );
 }
