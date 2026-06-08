@@ -137,17 +137,17 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M5 — Export + Polish
+## M5 — Export + Polish ✅
 
 ### Tasks
 
-- `[ ]` Export API: `GET /api/export/csv` — filename, folder, selected_by (comma-separated), shortlisted_at
-- `[ ]` Export API: `GET /api/export/txt` — one filename per line
-- `[ ]` Export button on shortlist page (downloads both files)
-- `[ ]` Folder list shows per-folder progress (X% reviewed) per current user
-- `[ ]` Empty states — no photos, folder fully reviewed, shortlist empty
-- `[ ]` Loading states — skeleton while thumbnail loads
-- `[ ]` Error states — photo file missing, DB error
+- `[x]` Export API: `GET /api/export/csv` — filename, folder, selected_by (semicolon-separated), shortlisted_at
+- `[x]` Export API: `GET /api/export/txt` — one filename per line
+- `[x]` Export button on shortlist page (downloads both files)
+- `[x]` Folder list shows per-folder progress (X% reviewed) per current user (done in M3)
+- `[x]` Empty states — no photos, folder fully reviewed, shortlist empty
+- `[x]` Loading states — skeleton while thumbnail loads (pulsing skeleton in slideshow + shortlist grid)
+- `[x]` Error states — photo file missing (unavailable placeholder in slideshow)
 
 ### Test Cases
 

@@ -59,12 +59,23 @@ export default function ShortlistGrid() {
       </div>
 
       {loading && (
-        <div className="text-gray-500 text-center py-16">Loading…</div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div key={i} className="aspect-square bg-gray-800 rounded-xl animate-pulse" />
+          ))}
+        </div>
       )}
 
       {!loading && items.length === 0 && (
-        <div className="text-gray-500 text-center py-16">
-          {tab === "shortlisted" ? "No photos shortlisted yet." : "No removed photos."}
+        <div className="text-center py-20">
+          <p className="text-gray-400 text-lg mb-2">
+            {tab === "shortlisted" ? "No photos shortlisted yet." : "No removed photos."}
+          </p>
+          {tab === "shortlisted" && (
+            <p className="text-gray-600 text-sm">
+              Go to a folder and tap <strong className="text-gray-500">☆ Shortlist</strong> on photos you want to keep.
+            </p>
+          )}
         </div>
       )}
 
