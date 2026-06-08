@@ -116,16 +116,16 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M4 — Admin Portal
+## M4 — Admin Portal ✅
 
 ### Tasks
 
-- `[ ]` Admin-only route guard
-- `[ ]` User list page — shows all users, role, created date
-- `[ ]` Create user form — name, email, password, role
-- `[ ]` Delete user
-- `[ ]` Reset password form — admin sets new password for any user (no email flow)
-- `[ ]` Change own password (available to all users, not just admin)
+- `[x]` Admin-only route guard (proxy.ts + API-level requireAdmin)
+- `[x]` User list page — shows all users, role, created date
+- `[x]` Create user form — name, email, password, role
+- `[x]` Delete user
+- `[x]` Reset password form — admin sets new password for any user (no email flow)
+- `[x]` Change own password (available to all users via /profile)
 
 ### Test Cases
 

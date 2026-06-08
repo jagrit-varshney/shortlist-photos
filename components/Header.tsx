@@ -19,6 +19,9 @@ export default function Header() {
           </Link>
         )}
         <span className="text-gray-400 text-sm">{session?.user?.name}</span>
+        <Link href="/profile" className="text-sm text-gray-400 hover:text-white transition-colors">
+          Password
+        </Link>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
           className="text-sm text-gray-400 hover:text-white transition-colors"
