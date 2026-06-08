@@ -51,13 +51,13 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ### Test Cases
 
-- `[ ]` Scanner indexes correct photo count per folder
-- `[ ]` Scanner skips non-image files (.DS_Store, .json, etc.)
-- `[ ]` Thumbnail API returns compressed image, not full-res
-- `[ ]` Full-res API returns original file
-- `[ ]` Slideshow shows photos in consistent order across sessions
-- `[ ]` Preload does not block current photo render
-- `[ ]` Counter shows correct X of Y values
+- `[x]` Scanner indexes correct photo count per folder
+- `[x]` Scanner skips non-image files (.DS_Store, .json, etc.)
+- `[ ]` Thumbnail API returns compressed image, not full-res *(manual — requires real image file)*
+- `[ ]` Full-res API returns original file *(manual — requires real image file)*
+- `[x]` Slideshow shows photos in consistent order across sessions
+- `[ ]` Preload does not block current photo render *(manual — browser test)*
+- `[ ]` Counter shows correct X of Y values *(manual — browser test)*
 
 ---
 
@@ -75,11 +75,11 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ### Test Cases
 
-- `[ ]` Unauthenticated user redirected to login
-- `[ ]` Wrong password returns error, not crash
-- `[ ]` Session persists across page refresh
-- `[ ]` Logout clears session, redirects to login
-- `[ ]` Admin role vs user role correctly distinguished
+- `[ ]` Unauthenticated user redirected to login *(manual — requires running server)*
+- `[x]` Wrong password returns error, not crash
+- `[ ]` Session persists across page refresh *(manual — browser test)*
+- `[ ]` Logout clears session, redirects to login *(manual — browser test)*
+- `[x]` Admin role vs user role correctly distinguished
 
 ---
 
@@ -105,14 +105,14 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ### Test Cases
 
-- `[ ]` Skipping photo marks it seen for current user only (not other users)
-- `[ ]` Shortlisting photo adds current user to selected_by[], not duplicated on double-click
-- `[ ]` Two users shortlist same photo → both names appear
-- `[ ]` Un-shortlisting moves photo to removed tab, not deleted from DB
-- `[ ]` Restoring photo moves it back to shortlist with original selected_by intact
-- `[ ]` Resume returns correct first unseen photo after partial session
-- `[ ]` Resume on fully-reviewed folder shows "all done" state
-- `[ ]` Counters update in real-time during slideshow (no page refresh needed)
+- `[x]` Skipping photo marks it seen for current user only (not other users)
+- `[x]` Shortlisting photo adds current user to selected_by[], not duplicated on double-click
+- `[x]` Two users shortlist same photo → both names appear
+- `[x]` Un-shortlisting moves photo to removed tab, not deleted from DB
+- `[x]` Restoring photo moves it back to shortlist with original selected_by intact
+- `[x]` Resume returns correct first unseen photo after partial session
+- `[x]` Resume on fully-reviewed folder shows "all done" state
+- `[ ]` Counters update in real-time during slideshow *(manual — browser test)*
 
 ---
 
@@ -129,11 +129,11 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ### Test Cases
 
-- `[ ]` Non-admin cannot access admin routes (returns 403)
-- `[ ]` Admin can create user, new user can log in immediately
-- `[ ]` Admin resets password → old password no longer works
-- `[ ]` Deleting user does not delete their progress or shortlist contributions
-- `[ ]` Cannot delete own admin account
+- `[x]` Non-admin cannot access admin routes (returns 403)
+- `[x]` Admin can create user, new user can log in immediately
+- `[x]` Admin resets password → old password no longer works
+- `[x]` Deleting user does not delete their progress or shortlist contributions
+- `[x]` Cannot delete own admin account
 
 ---
 
@@ -151,11 +151,11 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ### Test Cases
 
-- `[ ]` CSV export contains correct headers and all shortlisted photos
-- `[ ]` CSV excludes photos with status `removed`
-- `[ ]` TXT export = one filename per line, no headers
-- `[ ]` Export with 0 shortlisted photos returns empty file, not error
-- `[ ]` Progress % correct after partial review
+- `[x]` CSV export contains correct headers and all shortlisted photos
+- `[x]` CSV excludes photos with status `removed`
+- `[x]` TXT export = one filename per line, no headers
+- `[x]` Export with 0 shortlisted photos returns empty file, not error
+- `[x]` Progress % correct after partial review
 
 ---
 

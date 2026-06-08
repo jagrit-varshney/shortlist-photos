@@ -1,26 +1,58 @@
 import Database from "better-sqlite3";
-import path from "path";
-import fs from "fs";
+import { setDb } from "@/lib/db";
 
-const DB_PATH = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "shortlist.db");
+let _testDb: Database.Database | null = null;
 
-let _db: Database.Database | null = null;
-
-export function setDb(db: Database.Database): void {
-  _db = db;
+export function getTestDb(): Database.Database {
+  if (_testDb) return _testDb;
+  _testDb = new Database(":memory:");
+  _testDb.pragma("journal_mode = WAL");
+  _testDb.pragma("foreign_keys = ON");
+  initSchema(_testDb);
+  setDb(_testDb);
+  return _testDb;
 }
 
-export function getDb(): Database.Database {
-  if (_db) return _db;
+export function resetTestDb(): void {
+  const db = getTestDb();
+  // order matters due to FK constraints
+  db.exec(`
+    DELETE FROM shortlist;
+    DELETE FROM progress;
+    DELETE FROM photos;
+    DELETE FROM folders;
+    DELETE FROM users;
+  `);
+}
 
-  const dir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+export function seedFolder(
+  db: Database.Database,
+  name: string,
+  photoCount: number
+): number {
+  const res = db
+    .prepare("INSERT INTO folders (name, path, photo_count) VALUES (?, ?, ?)")
+    .run(name, `/test/${name}`, photoCount);
+  const folderId = Number(res.lastInsertRowid);
+  for (let i = 0; i < photoCount; i++) {
+    db.prepare(
+      "INSERT INTO photos (folder_id, filename, path, sort_order) VALUES (?, ?, ?, ?)"
+    ).run(folderId, `photo_${i + 1}.jpg`, `/test/${name}/photo_${i + 1}.jpg`, i);
+  }
+  return folderId;
+}
 
-  _db = new Database(DB_PATH);
-  _db.pragma("journal_mode = WAL");
-  _db.pragma("foreign_keys = ON");
-  initSchema(_db);
-  return _db;
+export function seedUser(
+  db: Database.Database,
+  name: string,
+  role: "admin" | "user" = "user"
+): number {
+  const res = db
+    .prepare(
+      "INSERT INTO users (email, name, password_hash, role) VALUES (?, ?, ?, ?)"
+    )
+    .run(`${name.toLowerCase().replace(/ /g, ".")}@test.com`, name, "$2b$12$fakehash", role);
+  return Number(res.lastInsertRowid);
 }
 
 function initSchema(db: Database.Database) {
