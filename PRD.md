@@ -83,25 +83,25 @@ Web app for culling large photo collections collaboratively. Built for a wedding
 
 ---
 
-## M3 — Shortlisting + Progress Tracking
+## M3 — Shortlisting + Progress Tracking ✅
 
 ### Tasks
 
-- `[ ]` DB table: `progress` (user_id, photo_id, seen: bool, seen_at)
-- `[ ]` DB table: `shortlist` (photo_id, status: shortlisted|removed, selected_by: json array, removed_by, updated_at)
-- `[ ]` API route: `POST /api/photos/[photoId]/skip` — mark photo as seen for current user
-- `[ ]` API route: `POST /api/photos/[photoId]/shortlist` — add to shortlist, append current user to selected_by[]
-- `[ ]` API route: `POST /api/photos/[photoId]/unshortlist` — soft delete (status → removed, set removed_by)
-- `[ ]` API route: `POST /api/photos/[photoId]/restore` — restore un-shortlisted photo (status → shortlisted)
-- `[ ]` Resume logic — `GET /api/folders/[folderId]/resume` returns first unseen photo for current user
-- `[ ]` "Resume" button on folder list — resumes per-user progress
-- `[ ]` Shortlist page — grid view of all shortlisted photos
-  - `[ ]` Shows `selected_by` names on each photo
-  - `[ ]` Remove button (soft delete)
-- `[ ]` Un-shortlisted tab — recoverable removed photos, restore button
-- `[ ]` Counters visible during slideshow:
-  - `[ ]` Photos left to review (current folder)
-  - `[ ]` Total in shortlist
+- `[x]` DB table: `progress` (user_id, photo_id, seen: bool, seen_at)
+- `[x]` DB table: `shortlist` (photo_id, status: shortlisted|removed, selected_by: json array, removed_by, updated_at)
+- `[x]` API route: `POST /api/photos/[photoId]/skip` — mark photo as seen for current user
+- `[x]` API route: `POST /api/photos/[photoId]/shortlist` — add to shortlist, append current user to selected_by[]
+- `[x]` API route: `POST /api/photos/[photoId]/unshortlist` — soft delete (status → removed, set removed_by)
+- `[x]` API route: `POST /api/photos/[photoId]/restore` — restore un-shortlisted photo (status → shortlisted)
+- `[x]` Resume logic — `GET /api/folders/[folderId]/resume` returns first unseen photo for current user
+- `[x]` "Resume" button on folder list — resumes per-user progress
+- `[x]` Shortlist page — grid view of all shortlisted photos
+  - `[x]` Shows `selected_by` names on each photo
+  - `[x]` Remove button (soft delete)
+- `[x]` Un-shortlisted tab — recoverable removed photos, restore button
+- `[x]` Counters visible during slideshow:
+  - `[x]` Photos left to review (current folder)
+  - `[x]` Total in shortlist
 
 ### Test Cases
 
