@@ -16,6 +16,16 @@ interface FolderProgress {
   total: number;
 }
 
+function getAlbumTitle(): string {
+  try {
+    const db = getDb();
+    const row = db.prepare("SELECT value FROM settings WHERE key = 'album_title'").get() as { value: string } | undefined;
+    return row?.value ?? "";
+  } catch {
+    return "";
+  }
+}
+
 function getFolders(): Folder[] {
   try {
     const db = getDb();
@@ -48,6 +58,7 @@ export default async function HomePage() {
   const userId = (session?.user as { id?: string })?.id ?? "";
 
   const folders = getFolders();
+  const albumTitle = getAlbumTitle();
   const totalPhotos = folders.reduce((s, f) => s + f.photo_count, 0);
   const progressMap = userId ? getProgressForUser(userId, folders) : new Map();
   const totalSeen = [...progressMap.values()].reduce((s, p) => s + p.seen, 0);
@@ -57,6 +68,11 @@ export default async function HomePage() {
       <Header />
       <main className="flex-1 p-6">
         <div className="max-w-2xl mx-auto">
+
+          {/* Album title */}
+          {albumTitle && (
+            <h1 className="text-2xl font-bold text-white text-center mb-6 mt-2">{albumTitle}</h1>
+          )}
 
           {/* Shortlist summary */}
           <div className="flex items-center justify-between mb-6 mt-2">
@@ -102,10 +118,16 @@ export default async function HomePage() {
                         <ResumeButton folderId={folder.id} folderName={folder.name} />
                       )}
                       <Link
-                        href={`/slideshow?folderId=${folder.id}&folderName=${encodeURIComponent(folder.name)}`}
+                        href={`/gallery?folderId=${folder.id}&folderName=${encodeURIComponent(folder.name)}`}
                         className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg transition-colors"
                       >
-                        {isDone ? "Review again" : "Start"}
+                        Browse
+                      </Link>
+                      <Link
+                        href={`/slideshow?folderId=${folder.id}&folderName=${encodeURIComponent(folder.name)}`}
+                        className="bg-indigo-700 hover:bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg transition-colors"
+                      >
+                        {isDone ? "Review again" : "Slideshow"}
                       </Link>
                     </div>
                   </div>
@@ -137,10 +159,16 @@ export default async function HomePage() {
                   </div>
                 </div>
                 <Link
+                  href={`/gallery?folderId=all&folderName=All+Photos`}
+                  className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded-lg transition-colors"
+                >
+                  Browse
+                </Link>
+                <Link
                   href={`/slideshow?folderId=all&folderName=All+Photos`}
                   className="bg-indigo-700 hover:bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg transition-colors"
                 >
-                  Start
+                  Slideshow
                 </Link>
               </div>
             </div>

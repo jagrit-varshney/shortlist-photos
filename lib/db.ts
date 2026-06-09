@@ -70,6 +70,13 @@ function initSchema(db: Database.Database) {
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL DEFAULT ''
+    );
+
+    INSERT OR IGNORE INTO settings (key, value) VALUES ('album_title', '');
+
     CREATE INDEX IF NOT EXISTS idx_photos_folder ON photos(folder_id);
     CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
     CREATE INDEX IF NOT EXISTS idx_progress_photo ON progress(photo_id);

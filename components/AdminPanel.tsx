@@ -27,6 +27,38 @@ export default function AdminPanel() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // album title settings
+  const [albumTitle, setAlbumTitle] = useState("");
+  const [albumTitleSaving, setAlbumTitleSaving] = useState(false);
+
+  // reset DB
+  const [resetModal, setResetModal] = useState(false);
+  const [resetting, setResetting] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/settings").then(r => r.json()).then(d => setAlbumTitle(d.album_title ?? ""));
+  }, []);
+
+  async function handleResetDb() {
+    setResetting(true);
+    await fetch("/api/admin/reset-db", { method: "POST" });
+    setResetting(false);
+    setResetModal(false);
+    flash("Database reset — all progress and shortlists cleared");
+  }
+
+  async function saveAlbumTitle(e: React.FormEvent) {
+    e.preventDefault();
+    setAlbumTitleSaving(true);
+    await fetch("/api/admin/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ album_title: albumTitle }),
+    });
+    setAlbumTitleSaving(false);
+    flash("Album title saved");
+  }
+
   async function loadUsers() {
     const res = await fetch("/api/admin/users");
     if (res.ok) setUsers(await res.json());
@@ -64,6 +96,24 @@ export default function AdminPanel() {
           {error}
         </div>
       )}
+
+      {/* App Settings */}
+      <div className="bg-gray-800 rounded-xl p-5 mb-6">
+        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">App Settings</h2>
+        <form onSubmit={saveAlbumTitle} className="flex gap-3 items-end">
+          <Field label="Album title (shown in header + home page)">
+            <input
+              value={albumTitle}
+              onChange={(e) => setAlbumTitle(e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Owen & Jarek — December 2025"
+            />
+          </Field>
+          <button type="submit" disabled={albumTitleSaving} className="shrink-0 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-medium transition-colors mb-0.5">
+            {albumTitleSaving ? "Saving…" : "Save"}
+          </button>
+        </form>
+      </div>
 
       {/* User list */}
       <div className="bg-gray-800 rounded-xl overflow-hidden mb-6">
@@ -135,6 +185,45 @@ export default function AdminPanel() {
       >
         + Add user
       </button>
+
+      {/* Danger zone */}
+      <div className="bg-red-950/40 border border-red-800/50 rounded-xl p-5 mt-6">
+        <h2 className="text-sm font-semibold text-red-400 uppercase tracking-wide mb-3">Danger Zone</h2>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-white text-sm font-medium">Reset database</p>
+            <p className="text-gray-400 text-xs mt-0.5">Clears all shortlists and progress. Users and photos kept.</p>
+          </div>
+          <button
+            onClick={() => setResetModal(true)}
+            className="shrink-0 px-4 py-2 rounded-xl bg-red-700 hover:bg-red-600 text-white text-sm font-medium transition-colors"
+          >
+            Reset DB
+          </button>
+        </div>
+      </div>
+
+      {/* Reset DB confirm modal */}
+      {resetModal && (
+        <Modal title="Reset database" onClose={() => setResetModal(false)}>
+          <p className="text-gray-300 mb-2">This will permanently delete:</p>
+          <ul className="text-gray-400 text-sm mb-6 space-y-1 list-disc list-inside">
+            <li>All shortlisted / removed photos</li>
+            <li>All per-user review progress</li>
+          </ul>
+          <p className="text-gray-300 text-sm mb-6">Users, photos, and app settings are kept. This cannot be undone.</p>
+          <div className="flex gap-3">
+            <button onClick={() => setResetModal(false)} className={secondaryCls}>Cancel</button>
+            <button
+              onClick={handleResetDb}
+              disabled={resetting}
+              className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-medium transition-colors"
+            >
+              {resetting ? "Resetting…" : "Reset everything"}
+            </button>
+          </div>
+        </Modal>
+      )}
 
       {/* Modals */}
       {modal?.type === "create" && (

@@ -132,19 +132,29 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
     const photoId = photos[index]?.id;
     if (!photoId) return;
     setActionPending(true);
-    setShortlistedIds((prev) => new Set(prev).add(photoId));
-    setShortlistCount((c) => c + (shortlistedIds.has(photoId) ? 0 : 1));
-    advance();
-    fetch(`/api/photos/${photoId}/shortlist`, { method: "POST" })
-      .then((r) => r.json())
-      .then((d) => { if (d.shortlistCount !== undefined) setShortlistCount(d.shortlistCount); })
-      .finally(() => setActionPending(false));
+
+    if (shortlistedIds.has(photoId)) {
+      // already shortlisted → remove (stay on photo)
+      setShortlistedIds((prev) => { const s = new Set(prev); s.delete(photoId); return s; });
+      setShortlistCount((c) => Math.max(0, c - 1));
+      fetch(`/api/photos/${photoId}/unshortlist`, { method: "POST" })
+        .finally(() => setActionPending(false));
+    } else {
+      // not shortlisted → shortlist + advance
+      setShortlistedIds((prev) => new Set(prev).add(photoId));
+      setShortlistCount((c) => c + 1);
+      advance();
+      fetch(`/api/photos/${photoId}/shortlist`, { method: "POST" })
+        .then((r) => r.json())
+        .then((d) => { if (d.shortlistCount !== undefined) setShortlistCount(d.shortlistCount); })
+        .finally(() => setActionPending(false));
+    }
   }, [actionPending, photos, index, advance, shortlistedIds]);
 
   // ── Loading state ──────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex flex-col">
+      <div className="h-screen bg-black flex flex-col overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
           <Link href="/" className="text-gray-400 text-sm">← {folderName}</Link>
           <div className="h-4 w-16 bg-gray-700 rounded animate-pulse" />
@@ -196,12 +206,27 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
   const isShortlisted = shortlistedIds.has(current?.id);
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="h-screen bg-black flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-gray-900">
-        <Link href="/" className="text-gray-400 hover:text-white text-sm transition-colors">
-          ← {folderName}
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/" className="text-gray-400 hover:text-white transition-colors" title="Home">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+          </Link>
+          <span className="text-gray-600 text-sm">/</span>
+          <span className="text-gray-400 text-sm truncate max-w-[120px]">{folderName}</span>
+          <Link
+            href={`/gallery?folderId=${folderId}&folderName=${encodeURIComponent(folderName)}`}
+            className="text-gray-500 hover:text-white transition-colors"
+            title="Grid view"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </Link>
+        </div>
         <div className="flex items-center gap-4 text-sm text-gray-400">
           <span>{index + 1} / {total}</span>
           <Link href="/shortlist" className="text-indigo-400 hover:text-indigo-300 font-medium">
@@ -282,7 +307,7 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
               : "bg-indigo-600 hover:bg-indigo-500"
           }`}
         >
-          {isShortlisted ? "★ Shortlisted" : "☆ Shortlist"}
+          {isShortlisted ? "★ Shortlisted — tap to remove" : "☆ Shortlist"}
         </button>
       </div>
     </div>
