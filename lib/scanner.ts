@@ -62,6 +62,23 @@ export async function scanPhotos(): Promise<void> {
     scanFolder("All Photos", root, rootFiles);
   }
 
+  // Remove DB entries for photos no longer on disk
+  const allPhotos = db.prepare("SELECT id, path FROM photos").all() as { id: number; path: string }[];
+  const deletePhoto = db.prepare("DELETE FROM photos WHERE id = ?");
+  let removed = 0;
+  for (const photo of allPhotos) {
+    if (!fs.existsSync(photo.path)) {
+      deletePhoto.run(photo.id);
+      removed++;
+    }
+  }
+
+  // Remove empty folders
+  db.prepare("DELETE FROM folders WHERE photo_count = 0").run();
+  // Update counts after deletions
+  db.prepare("UPDATE folders SET photo_count = (SELECT COUNT(*) FROM photos WHERE folder_id = folders.id)").run();
+  db.prepare("DELETE FROM folders WHERE photo_count = 0").run();
+
   const total = (db.prepare("SELECT COUNT(*) as c FROM photos").get() as { c: number }).c;
-  console.log(`[scanner] Indexed ${total} photos`);
+  console.log(`[scanner] Indexed ${total} photos${removed > 0 ? `, removed ${removed} deleted` : ""}`);
 }
