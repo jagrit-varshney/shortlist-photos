@@ -42,12 +42,13 @@ npm run seed     # create first admin account interactively
 1. **Slideshow** — full-screen, one photo at a time. Big Shortlist / Skip buttons.
    - Progressive load: thumbnail first → full-res swap when ready
    - Preload: next 10 thumbnails + next 2 full-res
-2. **Folder-level or root-level selection**
-3. **Resume** — per-user progress, resumes at first unseen photo
-4. **Shortlist management** — shared, anyone can add/remove, soft delete with recoverable un-shortlisted tab
-5. **Counters** — photos left to review, total in shortlist
-6. **Export** — CSV + plain text
-7. **Admin portal** — create/delete users, reset passwords
+2. **Gallery view** — grid of all photos in a folder, click to open in slideshow
+3. **Folder-level or root-level selection**
+4. **Resume** — per-user progress, resumes at first unseen photo
+5. **Shortlist management** — shared, anyone can add/remove, soft delete with recoverable un-shortlisted tab
+6. **Counters** — photos left to review, total in shortlist
+7. **Export** — CSV + plain text + copy shortlisted photos to a new subfolder inside `PHOTOS_ROOT`
+8. **Admin portal** — create/delete users, reset passwords, set album title, reset DB (clears shortlist + progress)
 
 ## Env Vars
 

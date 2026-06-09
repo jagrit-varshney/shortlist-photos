@@ -5,11 +5,12 @@ Web app for collaboratively culling large photo collections. Built for wedding p
 ## Features
 
 - Full-screen slideshow with progressive loading (thumbnail → full-res)
+- Gallery grid view — browse all photos, click to open in slideshow
 - Shared shortlist with per-user attribution (see who picked each photo)
 - Per-user resume — pick up exactly where you left off
 - Soft-delete with recoverable un-shortlisted tab
-- Admin portal — create accounts, reset passwords
-- Export as CSV or plain text for the photographer
+- Admin portal — create accounts, reset passwords, set album title, reset DB
+- Export shortlist as CSV, plain text, or copy original files to a new folder
 
 ---
 

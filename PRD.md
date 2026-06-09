@@ -202,6 +202,29 @@ shortlist (id, photo_id, status, selected_by, removed_by, created_at, updated_at
 
 ---
 
+---
+
+## M7 — Gallery View + Admin Polish + Copy to Folder ✅
+
+### Tasks
+
+- `[x]` Gallery view — grid of all photos in a folder, lazy-loaded thumbnails, click to open in slideshow at that position
+- `[x]` Remove from shortlist directly from gallery grid (hover → × button)
+- `[x]` Album title setting — admin can set a title shown in header + home page
+- `[x]` Reset DB — admin danger-zone button to clear all shortlists and progress (users/photos kept)
+- `[x]` Copy shortlisted photos to folder — copies all shortlisted originals into a new subfolder inside `PHOTOS_ROOT`. Folder name defaults to `shortlist_<date>`, editable before copy.
+- `[x]` Fix resume first-photo skeleton bug — photo-ID-keyed load state eliminates race condition between cached image `onLoad` and reset `useEffect`
+
+### Test Cases
+
+- `[ ]` Gallery grid lazy-loads images as user scrolls *(manual — browser test)*
+- `[ ]` Clicking gallery item opens slideshow at correct index *(manual — browser test)*
+- `[ ]` Copy to folder creates correct subfolder with all shortlisted files *(manual — requires filesystem)*
+- `[ ]` Copy to folder rejects duplicate folder name with clear error *(manual)*
+- `[ ]` Album title persists across restarts *(manual — requires restart)*
+
+---
+
 ## Out of Scope (v1)
 
 - Mobile app (Android/iOS)
