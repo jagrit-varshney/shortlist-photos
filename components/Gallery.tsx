@@ -111,10 +111,13 @@ export default function Gallery({ folderId, folderName }: GalleryProps) {
           {photos.map((photo, idx) => {
             const isShortlisted = shortlistedIds.has(photo.id);
             return (
-              <button
+              <div
                 key={photo.id}
+                role="button"
+                tabIndex={0}
                 onClick={() => openAt(idx)}
-                className="relative aspect-square group overflow-hidden bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-inset"
+                onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openAt(idx)}
+                className="relative aspect-square group overflow-hidden bg-gray-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-inset"
                 title={`${photo.filename} (#${idx + 1})`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,7 +148,7 @@ export default function Gallery({ folderId, folderName }: GalleryProps) {
                     {idx + 1}
                   </span>
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>

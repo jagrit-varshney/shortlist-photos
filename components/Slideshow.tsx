@@ -26,9 +26,9 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
   const [shortlistCount, setShortlistCount] = useState(0);
   const [shortlistedIds, setShortlistedIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
-  const [thumbLoaded, setThumbLoaded] = useState(false);
-  const [fullResLoaded, setFullResLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
+  const [thumbLoadedId, setThumbLoadedId] = useState<number | null>(null);
+  const [fullResLoadedId, setFullResLoadedId] = useState<number | null>(null);
+  const [imgErrorId, setImgErrorId] = useState<number | null>(null);
   const [done, setDone] = useState(false);
   const [actionPending, setActionPending] = useState(false);
   const preloadedFull = useRef<Set<number>>(new Set());
@@ -101,13 +101,6 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
       .then((r) => r.json())
       .then((data) => setPhotos((prev) => [...prev, ...data.photos]));
   }, [index, photos.length, total, apiBase, startIndex]);
-
-  // reset image state when photo changes
-  useEffect(() => {
-    setThumbLoaded(false);
-    setFullResLoaded(false);
-    setImgError(false);
-  }, [index]);
 
   const advance = useCallback(() => {
     if (index + 1 >= photos.length && photos.length >= total) {
@@ -203,6 +196,9 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
   }
 
   const current = photos[index];
+  const thumbLoaded = thumbLoadedId === current?.id;
+  const fullResLoaded = fullResLoadedId === current?.id;
+  const imgError = imgErrorId === current?.id;
   const isShortlisted = shortlistedIds.has(current?.id);
 
   return (
@@ -238,8 +234,8 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
       {/* Photo area */}
       <div className="flex-1 relative flex items-center justify-center bg-black overflow-hidden min-h-0">
 
-        {/* Skeleton — visible until thumbnail loads */}
-        {!thumbLoaded && !imgError && (
+        {/* Skeleton — visible until thumbnail or full-res loads */}
+        {!thumbLoaded && !fullResLoaded && !imgError && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-full max-w-2xl aspect-[4/3] bg-gray-800 animate-pulse rounded mx-4" />
           </div>
@@ -266,8 +262,8 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
             className={`max-h-full max-w-full object-contain transition-opacity duration-200 ${
               thumbLoaded && !fullResLoaded ? "opacity-100" : "opacity-0 absolute"
             }`}
-            onLoad={() => setThumbLoaded(true)}
-            onError={() => setImgError(true)}
+            onLoad={() => setThumbLoadedId(current.id)}
+            onError={() => setImgErrorId(current.id)}
           />
         )}
 
@@ -281,7 +277,7 @@ export default function Slideshow({ folderId, folderName, startIndex = 0 }: Slid
             className={`max-h-full max-w-full object-contain transition-opacity duration-300 ${
               fullResLoaded ? "opacity-100" : "opacity-0 absolute"
             }`}
-            onLoad={() => setFullResLoaded(true)}
+            onLoad={() => setFullResLoadedId(current.id)}
           />
         )}
       </div>
